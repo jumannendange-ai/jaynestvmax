@@ -9,8 +9,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.os.Build;
 import android.view.WindowInsetsController;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
 public class SplashActivity extends Activity {
     @Override
@@ -18,6 +16,7 @@ public class SplashActivity extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             getWindow().setDecorFitsSystemWindows(false);
             WindowInsetsController c = getWindow().getInsetsController();
@@ -29,32 +28,12 @@ public class SplashActivity extends Activity {
             getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
+
         setContentView(R.layout.activity_splash);
-
-        View logo = findViewById(R.id.logo_container);
-        View tagline = findViewById(R.id.tv_tagline);
-        View loadingDots = findViewById(R.id.loading_dots);
-
-        Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
-        Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
-
-        logo.startAnimation(fadeIn);
-
-        new Handler().postDelayed(() -> {
-            tagline.setVisibility(View.VISIBLE);
-            tagline.startAnimation(slideUp);
-        }, 600);
-
-        new Handler().postDelayed(() -> {
-            loadingDots.setVisibility(View.VISIBLE);
-            Animation pulse = AnimationUtils.loadAnimation(this, R.anim.pulse);
-            loadingDots.startAnimation(pulse);
-        }, 1200);
 
         new Handler().postDelayed(() -> {
             startActivity(new Intent(SplashActivity.this, MainActivity.class));
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             finish();
-        }, 3500);
+        }, 2000);
     }
 }
