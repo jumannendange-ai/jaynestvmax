@@ -2,34 +2,27 @@ package com.jaynesmaxtv.app;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.net.http.SslError;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowInsetsController;
 import android.view.WindowManager;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.net.http.SslError;
-import android.webkit.SslErrorHandler;
-import android.os.Build;
-import android.view.WindowInsetsController;
-import android.util.Base64;
+
 import com.onesignal.OneSignal;
 import com.onesignal.debug.LogLevel;
 
 public class MainActivity extends Activity {
     private WebView webView;
 
-    // URL imefichwa kwa Base64 - haitaonekana wazi
-    private static final String[] C = {
-        "aHR0cHM6Ly9kZGUuY3Qud3Mv",
-        "MTAzNjA3NzctM2FkYS00MTQ1LWI4M2YtMDBlYjAzMTJhNTNm"
-    };
-
-    private String g(int i) {
-        return new String(Base64.decode(C[i], Base64.DEFAULT));
-    }
+    private static final String URL = "https://dde.ct.ws/";
+    private static final String ONESIGNAL_ID = "10360777-3ada-4145-b83f-00eb0312a53f";
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -38,7 +31,7 @@ public class MainActivity extends Activity {
 
         // OneSignal Push Notifications
         OneSignal.getDebug().setLogLevel(LogLevel.NONE);
-        OneSignal.initWithContext(this, g(1));
+        OneSignal.initWithContext(this, ONESIGNAL_ID);
         OneSignal.getNotifications().requestPermission(true, null);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -88,7 +81,7 @@ public class MainActivity extends Activity {
         });
 
         webView.setWebChromeClient(new WebChromeClient());
-        webView.loadUrl(g(0));
+        webView.loadUrl(URL);
     }
 
     @Override

@@ -15,12 +15,8 @@ android {
     }
 
     buildTypes {
-        release {
-            minifyEnabled false
-        }
-        debug {
-            minifyEnabled false
-        }
+        release { minifyEnabled false }
+        debug { minifyEnabled false }
     }
 
     compileOptions {
