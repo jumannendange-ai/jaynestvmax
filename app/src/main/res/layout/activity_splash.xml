@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <!-- Background glow effect -->
+    <View
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/glow_circle"/>
+
+    <!-- Main logo container -->
+    <LinearLayout
+        android:id="@+id/logo_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="60dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <!-- JAYNES text -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="JAYNES"
+            android:textColor="#E31E25"
+            android:textSize="72sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.15"
+            android:fontFamily="sans-serif-condensed"/>
+
+        <!-- MAX TV text -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MAX TV"
+            android:textColor="#FFFFFF"
+            android:textSize="42sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.3"
+            android:layout_marginTop="-10dp"
+            android:fontFamily="sans-serif-condensed"/>
+
+        <!-- Red line divider -->
+        <View
+            android:layout_width="220dp"
+            android:layout_height="3dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/red_gradient_line"/>
+
+    </LinearLayout>
+
+    <!-- Tagline -->
+    <TextView
+        android:id="@+id/tv_tagline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/logo_container"
+        android:layout_marginTop="10dp"
+        android:text="● STREAMING  ●  ENTERTAINMENT  ●"
+        android:textColor="#E31E25"
+        android:textSize="11sp"
+        android:letterSpacing="0.25"
+        android:visibility="invisible"/>
+
+    <!-- Loading dots at bottom -->
+    <LinearLayout
+        android:id="@+id/loading_dots"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="60dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="invisible">
+
+        <View
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/dot_red"/>
+        <View
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/dot_white"/>
+        <View
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/dot_red"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,2 @@
+rootProject.name = "jaynes_tv_max"
+include ':app'
