@@ -39,8 +39,7 @@ public class MainActivity extends Activity {
         // OneSignal Push Notifications
         OneSignal.getDebug().setLogLevel(LogLevel.NONE);
         OneSignal.initWithContext(this, g(1));
-        OneSignal.getNotifications().requestPermission(true, this, accepted -> {});
-
+        OneSignal.getNotifications().requestPermission(true, Continue.with(r -> {}));
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
