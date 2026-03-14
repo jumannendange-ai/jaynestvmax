@@ -16,6 +16,6 @@ public class MainActivity extends Activity {
         web.getSettings().setMediaPlaybackRequiresUserGesture(false);
         web.setWebViewClient(new WebViewClient());
         setContentView(web);
-        web.loadUrl("https://zimotv.com/mb");
+        web.loadUrl("https://dde.ct.ws/");
     }
 }
