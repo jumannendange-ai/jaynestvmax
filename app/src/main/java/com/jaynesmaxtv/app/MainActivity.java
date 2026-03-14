@@ -15,24 +15,14 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.onesignal.OneSignal;
-import com.onesignal.debug.LogLevel;
-
 public class MainActivity extends Activity {
     private WebView webView;
-
     private static final String URL = "https://dde.ct.ws/";
-    private static final String ONESIGNAL_ID = "10360777-3ada-4145-b83f-00eb0312a53f";
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // OneSignal Push Notifications
-        OneSignal.getDebug().setLogLevel(LogLevel.NONE);
-        OneSignal.initWithContext(this, ONESIGNAL_ID);
-        OneSignal.getNotifications().requestPermission(true, null);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -48,8 +38,7 @@ public class MainActivity extends Activity {
         } else {
             getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
 
         setContentView(R.layout.activity_main);
@@ -69,15 +58,6 @@ public class MainActivity extends Activity {
             public void onReceivedSslError(WebView v, SslErrorHandler h, SslError e) {
                 h.proceed();
             }
-            @Override
-            public void onPageFinished(WebView v, String url) {
-                v.evaluateJavascript(
-                    "javascript:(function(){" +
-                    "document.body.style.background='#000';" +
-                    "document.body.style.margin='0';" +
-                    "document.body.style.padding='0';" +
-                    "})()", null);
-            }
         });
 
         webView.setWebChromeClient(new WebChromeClient());
@@ -88,16 +68,6 @@ public class MainActivity extends Activity {
     public void onBackPressed() {
         if (webView.canGoBack()) webView.goBack();
         else super.onBackPressed();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
-            getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-        }
     }
 
     @Override
