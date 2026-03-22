@@ -34,3 +34,17 @@ interface ApiService {
     @GET("maintenance")
     suspend fun checkMaintenance(): Response<MaintenanceResponse>
 }
+
+// Supabase Auth — login moja kwa moja
+interface SupabaseAuthService {
+    @retrofit2.http.POST("auth/v1/token")
+    suspend fun login(
+        @retrofit2.http.Query("grant_type") grantType: String = "password",
+        @retrofit2.http.Body body: Map<String, String>
+    ): retrofit2.Response<com.jaynestv.max.data.models.LoginResponse>
+
+    @retrofit2.http.POST("auth/v1/recover")
+    suspend fun resetPassword(
+        @retrofit2.http.Body body: Map<String, String>
+    ): retrofit2.Response<Unit>
+}
