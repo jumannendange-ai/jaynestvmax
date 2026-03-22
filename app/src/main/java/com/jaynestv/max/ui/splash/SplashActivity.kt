@@ -2,6 +2,7 @@ package com.jaynestv.max.ui.splash
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -18,34 +19,43 @@ class SplashActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySplashBinding
     private lateinit var session: SessionManager
+    private var mediaPlayer: MediaPlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        window.statusBarColor = android.graphics.Color.parseColor("#080808")
+
+        // Fullscreen kabisa
+        window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN or
+                        WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        window.statusBarColor     = android.graphics.Color.parseColor("#080808")
         window.navigationBarColor = android.graphics.Color.parseColor("#080808")
 
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
         session = SessionManager(this)
 
-        // Lottie animation — rings + play button kama Azam Max
+        // ── 1. Lottie animation ──────────────────────────────────
         binding.lottieView.apply {
             setAnimation(R.raw.splash_animation)
             repeatCount = 0
-            speed = 1.2f
+            speed       = 1.0f
             playAnimation()
         }
 
-        // App name inaonekana baada ya animation
-        binding.appName.postDelayed({
+        // ── 2. Startup sound ─────────────────────────────────────
+        playStartupSound()
+
+        // ── 3. App name inaonekana baada ya animation ────────────
+        binding.lottieView.postDelayed({
             binding.appName.visibility = View.VISIBLE
             binding.tagline.visibility = View.VISIBLE
-            binding.appName.startAnimation(AnimationUtils.loadAnimation(
-                this@SplashActivity, android.R.anim.fade_in))
-        }, 1200)
+            val fade = AnimationUtils.loadAnimation(this, android.R.anim.fade_in)
+            fade.duration = 600
+            binding.appName.startAnimation(fade)
+            binding.tagline.startAnimation(fade)
+        }, 1400)
 
-        // Navigate baada ya ms 3000
+        // ── 4. Navigate baada ya ms 3000 ─────────────────────────
         binding.lottieView.postDelayed({
             val dest = if (session.isLoggedIn()) HomeActivity::class.java
                        else                       LoginActivity::class.java
@@ -53,5 +63,23 @@ class SplashActivity : AppCompatActivity() {
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
             finish()
         }, 3000)
+    }
+
+    private fun playStartupSound() {
+        try {
+            mediaPlayer = MediaPlayer.create(this, R.raw.startup_sound)
+            mediaPlayer?.apply {
+                setVolume(0.75f, 0.75f)
+                start()
+            }
+        } catch (e: Exception) {
+            // Sound imeshindwa — endelea bila sauti
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer?.release()
+        mediaPlayer = null
     }
 }

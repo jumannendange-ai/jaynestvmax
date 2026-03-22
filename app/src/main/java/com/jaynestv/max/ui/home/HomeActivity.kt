@@ -7,8 +7,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import com.bumptech.glide.Glide
-import com.jaynestv.max.R
 import com.jaynestv.max.data.api.RetrofitClient
 import com.jaynestv.max.data.models.Channel
 import com.jaynestv.max.data.models.Slider
@@ -16,6 +14,7 @@ import com.jaynestv.max.databinding.ActivityHomeBinding
 import com.jaynestv.max.ui.account.AccountActivity
 import com.jaynestv.max.ui.malipo.MalipoActivity
 import com.jaynestv.max.ui.player.PlayerActivity
+import com.jaynestv.max.utils.Constants
 import com.jaynestv.max.utils.SessionManager
 import kotlinx.coroutines.launch
 
@@ -26,6 +25,7 @@ class HomeActivity : AppCompatActivity() {
     private var channelAdapter: ChannelAdapter? = null
     private var sliderAdapter: SliderAdapter? = null
     private var trialTimer: CountDownTimer? = null
+    private var currentSource = Constants.SOURCE_ALL
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,105 +37,103 @@ class HomeActivity : AppCompatActivity() {
         setupSlider()
         setupBottomNav()
         setupQuickButtons()
-        loadData()
+        loadChannels(Constants.SOURCE_ALL)
+        loadSliders()
         handleAccessBanner()
+        checkMaintenance()
     }
 
     private fun setupRecycler() {
-        channelAdapter = ChannelAdapter(session) { channel ->
-            openChannel(channel)
-        }
+        channelAdapter = ChannelAdapter(session) { channel -> openChannel(channel) }
         binding.rvChannels.apply {
             layoutManager = GridLayoutManager(this@HomeActivity, 2)
             adapter = channelAdapter
         }
+        binding.btnRetryLoad.setOnClickListener { loadChannels(currentSource) }
     }
 
     private fun setupSlider() {
-        sliderAdapter = SliderAdapter { slider ->
-            // Slider click — ignore au navigate
-        }
+        sliderAdapter = SliderAdapter {}
         binding.vpSlider.adapter = sliderAdapter
         binding.dotsIndicator.attachTo(binding.vpSlider)
     }
 
     private fun setupBottomNav() {
-        binding.navHome.setOnClickListener { /* already here */ }
-        binding.navLive.setOnClickListener { loadCategory("live") }
-        binding.navMalipo.setOnClickListener {
-            startActivity(Intent(this, MalipoActivity::class.java))
-        }
-        binding.navAkaunti.setOnClickListener {
-            startActivity(Intent(this, AccountActivity::class.java))
-        }
-        // Highlight home
-        binding.navHome.isSelected = true
+        binding.navHome.setOnClickListener { loadChannels(Constants.SOURCE_ALL) }
+        binding.navLive.setOnClickListener { loadChannels(Constants.SOURCE_NBC) }
+        binding.navMalipo.setOnClickListener { startActivity(Intent(this, MalipoActivity::class.java)) }
+        binding.navAkaunti.setOnClickListener { startActivity(Intent(this, AccountActivity::class.java)) }
     }
 
     private fun setupQuickButtons() {
-        binding.btnMechi.setOnClickListener  { loadCategory("mechi") }
-        binding.btnAzam.setOnClickListener   { loadCategory("azam") }
-        binding.btnNBC.setOnClickListener    { loadCategory("nbc") }
-        binding.btnGlobal.setOnClickListener { loadCategory("global") }
-        binding.btnLocal.setOnClickListener  { loadCategory("local") }
-        binding.btnMalipo.setOnClickListener {
-            startActivity(Intent(this, MalipoActivity::class.java))
+        binding.btnMechi.setOnClickListener  { loadChannels(Constants.SOURCE_NBC) }
+        binding.btnAzam.setOnClickListener   { loadChannels(Constants.SOURCE_AZAM) }
+        binding.btnNBC.setOnClickListener    { loadChannels(Constants.SOURCE_NBC) }
+        binding.btnGlobal.setOnClickListener { loadChannels(Constants.SOURCE_GLOBAL) }
+        binding.btnLocal.setOnClickListener  { loadChannels(Constants.SOURCE_LOCAL) }
+        binding.btnMalipo.setOnClickListener { startActivity(Intent(this, MalipoActivity::class.java)) }
+
+        // Search
+        binding.inputSearch.setOnEditorActionListener { v, _, _ ->
+            val q = v.text.toString().trim()
+            if (q.isNotEmpty()) searchChannels(q)
+            true
         }
     }
 
-    private fun loadData() {
-        binding.shimmerChannels.startShimmer()
-        binding.shimmerChannels.visibility = View.VISIBLE
-        binding.rvChannels.visibility = View.GONE
-
+    private fun loadChannels(source: String) {
+        currentSource = source
+        showLoading(true)
         lifecycleScope.launch {
-            // Load sliders
             try {
-                val resp = RetrofitClient.apiService.getCategories()
-                resp.body()?.categories?.let { cats ->
-                    val sliders = cats.map { cat ->
-                        Slider(title = cat.name, imageUrl = cat.image, description = cat.description)
+                val resp = RetrofitClient.apiService.getChannels(source = source)
+                val channels = resp.body()?.channels ?: emptyList()
+                channelAdapter?.submitList(channels)
+                showLoading(false)
+                binding.errorLayout.visibility = View.GONE
+
+                // Load slider images kutoka channels
+                if (source == Constants.SOURCE_ALL) {
+                    val sliders = channels.take(5).map { ch ->
+                        Slider(title = ch.name, imageUrl = ch.logo, description = ch.category)
                     }
                     sliderAdapter?.submitList(sliders)
                 }
-            } catch (e: Exception) { /* Ignore slider error */ }
-
-            // Load channels
-            try {
-                val resp = RetrofitClient.apiService.getChannels()
-                val channels = resp.body()?.channels ?: emptyList()
-                channelAdapter?.submitList(channels)
-                binding.shimmerChannels.stopShimmer()
-                binding.shimmerChannels.visibility = View.GONE
-                binding.rvChannels.visibility = View.VISIBLE
-                binding.errorLayout.visibility = View.GONE
             } catch (e: Exception) {
-                binding.shimmerChannels.stopShimmer()
-                binding.shimmerChannels.visibility = View.GONE
+                showLoading(false)
                 binding.errorLayout.visibility = View.VISIBLE
             }
         }
     }
 
-    private fun loadCategory(category: String) {
-        binding.shimmerChannels.startShimmer()
-        binding.shimmerChannels.visibility = View.VISIBLE
-        binding.rvChannels.visibility = View.GONE
+    private fun loadSliders() {
         lifecycleScope.launch {
             try {
-                val resp = RetrofitClient.apiService.getChannels(category)
+                val resp = RetrofitClient.apiService.getCategories()
+                val sliders = resp.body()?.categories?.take(5)?.map { cat ->
+                    Slider(title = cat.name, imageUrl = cat.image, description = cat.description)
+                } ?: emptyList()
+                if (sliders.isNotEmpty()) sliderAdapter?.submitList(sliders)
+            } catch (e: Exception) { /* Ignore */ }
+        }
+    }
+
+    private fun searchChannels(query: String) {
+        showLoading(true)
+        lifecycleScope.launch {
+            try {
+                val resp = RetrofitClient.apiService.getChannels(query = query)
                 channelAdapter?.submitList(resp.body()?.channels ?: emptyList())
-            } catch (e: Exception) {}
-            binding.shimmerChannels.stopShimmer()
-            binding.shimmerChannels.visibility = View.GONE
-            binding.rvChannels.visibility = View.VISIBLE
+                showLoading(false)
+            } catch (e: Exception) { showLoading(false) }
         }
     }
 
     private fun openChannel(channel: Channel) {
-        // Check access
         if (!session.isFreeChannel(channel.name) && !session.hasAnyAccess()) {
-            showPaywallDialog(channel.name)
+            PaywallDialog(channel.name) {
+                startActivity(Intent(this, MalipoActivity::class.java))
+            }.show(supportFragmentManager, "paywall")
             return
         }
         val intent = Intent(this, PlayerActivity::class.java).apply {
@@ -143,43 +141,37 @@ class HomeActivity : AppCompatActivity() {
             putExtra(PlayerActivity.EXTRA_STREAM_URL,   channel.streamUrl)
             putExtra(PlayerActivity.EXTRA_STREAM_MPD,   channel.streamUrlMpd)
             putExtra(PlayerActivity.EXTRA_IS_LIVE,      channel.isLive)
+            putExtra(PlayerActivity.EXTRA_CLEARKEY_KID, channel.clearkeyKid)
+            putExtra(PlayerActivity.EXTRA_CLEARKEY_KEY, channel.clearkeyKey)
         }
         startActivity(intent)
     }
 
     private fun handleAccessBanner() {
         if (session.isAdmin() || session.hasPremium()) return
-
         if (session.trialActive()) {
             showTrialBanner()
-        } else if (!session.hasAnyAccess()) {
-            // Weka trial kwa mara ya kwanza
-            if (session.getTrialEnd() == 0L) {
-                session.saveTrialEnd(System.currentTimeMillis() + com.jaynestv.max.utils.Constants.TRIAL_MS)
-                showTrialBanner()
-            } else {
-                showPaywallBanner()
-            }
+        } else if (session.getTrialEnd() == 0L) {
+            session.saveTrialEnd(System.currentTimeMillis() + Constants.TRIAL_MS)
+            showTrialBanner()
+        } else {
+            showPaywallBanner()
         }
     }
 
     private fun showTrialBanner() {
         binding.trialBanner.visibility = View.VISIBLE
         binding.paywallBanner.visibility = View.GONE
-
         trialTimer = object : CountDownTimer(session.trialSecondsLeft() * 1000L, 1000L) {
             override fun onTick(ms: Long) {
-                val secs = ms / 1000
-                val m = secs / 60
-                val s = secs % 60
-                binding.txtTrialTime.text = "${String.format("%02d", m)}:${String.format("%02d", s)}"
+                val s = ms / 1000
+                binding.txtTrialTime.text = "%02d:%02d".format(s / 60, s % 60)
             }
             override fun onFinish() {
                 binding.trialBanner.visibility = View.GONE
                 showPaywallBanner()
             }
         }.start()
-
         binding.btnTrialUpgrade.setOnClickListener {
             startActivity(Intent(this, MalipoActivity::class.java))
         }
@@ -193,10 +185,35 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun showPaywallDialog(channelName: String) {
-        PaywallDialog(channelName) {
-            startActivity(Intent(this, MalipoActivity::class.java))
-        }.show(supportFragmentManager, "paywall")
+    private fun showLoading(show: Boolean) {
+        binding.shimmerChannels.visibility = if (show) View.VISIBLE else View.GONE
+        binding.rvChannels.visibility      = if (show) View.GONE    else View.VISIBLE
+        if (show) binding.shimmerChannels.startShimmer()
+        else      binding.shimmerChannels.stopShimmer()
+    }
+
+    private fun checkMaintenance() {
+        lifecycleScope.launch {
+            try {
+                val resp = RetrofitClient.apiService.checkMaintenance()
+                if (resp.body()?.maintenance == true && !session.isAdmin()) {
+                    // Onyesha maintenance screen
+                    showMaintenanceOverlay()
+                }
+            } catch (e: Exception) { /* Ignore */ }
+        }
+    }
+
+    private fun showMaintenanceOverlay() {
+        binding.paywallBanner.visibility = View.GONE
+        binding.trialBanner.visibility = View.GONE
+        // Simple overlay
+        android.app.AlertDialog.Builder(this)
+            .setTitle("🔧 Matengenezo")
+            .setMessage("App imefungwa kwa muda kwa ajili ya matengenezo.\nTutarudi hivi karibuni!")
+            .setCancelable(false)
+            .setPositiveButton("Sawa") { _, _ -> finish() }
+            .show()
     }
 
     override fun onResume() {
@@ -213,7 +230,7 @@ class HomeActivity : AppCompatActivity() {
                         trialTimer?.cancel()
                     }
                 }
-            } catch (e: Exception) {}
+            } catch (e: Exception) { /* Ignore */ }
         }
     }
 

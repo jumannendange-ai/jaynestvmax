@@ -20,17 +20,21 @@ import com.jaynestv.max.databinding.ActivityPlayerBinding
 class PlayerActivity : AppCompatActivity() {
 
     companion object {
-        const val EXTRA_CHANNEL_NAME = "channel_name"
-        const val EXTRA_STREAM_URL   = "stream_url"
-        const val EXTRA_STREAM_MPD   = "stream_mpd"
-        const val EXTRA_IS_LIVE      = "is_live"
+        const val EXTRA_CHANNEL_NAME  = "channel_name"
+        const val EXTRA_STREAM_URL    = "stream_url"
+        const val EXTRA_STREAM_MPD    = "stream_mpd"
+        const val EXTRA_IS_LIVE       = "is_live"
+        const val EXTRA_CLEARKEY_KID  = "clearkey_kid"
+        const val EXTRA_CLEARKEY_KEY  = "clearkey_key"
     }
 
     private lateinit var binding: ActivityPlayerBinding
     private var player: ExoPlayer? = null
-    private var streamUrl = ""
-    private var streamMpd = ""
-    private var useMpd    = false
+    private var streamUrl    = ""
+    private var streamMpd    = ""
+    private var clearkeyKid  = ""
+    private var clearkeyKey  = ""
+    private var useMpd       = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,8 +54,10 @@ class PlayerActivity : AppCompatActivity() {
 
         val channelName = intent.getStringExtra(EXTRA_CHANNEL_NAME) ?: "JAYNES MAX TV"
         val isLive      = intent.getBooleanExtra(EXTRA_IS_LIVE, true)
-        streamUrl       = intent.getStringExtra(EXTRA_STREAM_URL) ?: ""
-        streamMpd       = intent.getStringExtra(EXTRA_STREAM_MPD) ?: ""
+        streamUrl      = intent.getStringExtra(EXTRA_STREAM_URL)   ?: ""
+        streamMpd      = intent.getStringExtra(EXTRA_STREAM_MPD)   ?: ""
+        clearkeyKid    = intent.getStringExtra(EXTRA_CLEARKEY_KID) ?: ""
+        clearkeyKey    = intent.getStringExtra(EXTRA_CLEARKEY_KEY) ?: ""
 
         binding.txtChannelName.text = channelName
         binding.badgeLive.visibility = if (isLive) View.VISIBLE else View.GONE

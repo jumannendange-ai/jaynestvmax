@@ -12,11 +12,19 @@ object RetrofitClient {
     private val okHttp = OkHttpClient.Builder()
         .connectTimeout(15, TimeUnit.SECONDS)
         .readTimeout(20, TimeUnit.SECONDS)
+        .addInterceptor { chain ->
+            val req = chain.request().newBuilder()
+                .addHeader("User-Agent", "JaynesMaxTV/4.0 Android")
+                .addHeader("Accept", "application/json")
+                .build()
+            chain.proceed(req)
+        }
         .addInterceptor(HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
+            level = HttpLoggingInterceptor.Level.BASIC
         })
         .build()
 
+    // ── Main API — jaynes-api.onrender.com ───────────────────────
     val apiService: ApiService by lazy {
         Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
@@ -26,9 +34,10 @@ object RetrofitClient {
             .create(ApiService::class.java)
     }
 
+    // ── Supabase Auth moja kwa moja ──────────────────────────────
     val supabaseAuth: SupabaseAuthService by lazy {
         Retrofit.Builder()
-            .baseUrl(Constants.SUPABASE_URL + "/")
+            .baseUrl("${Constants.SUPABASE_URL}/")
             .client(okHttp.newBuilder()
                 .addInterceptor { chain ->
                     val req = chain.request().newBuilder()

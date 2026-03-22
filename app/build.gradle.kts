@@ -14,10 +14,9 @@ android {
         versionCode = 4
         versionName = "4.0"
 
-        buildConfigField("String", "SUPABASE_URL",  "\"https://dablnrggyfcddmdeiqxi.supabase.co\"")
-        buildConfigField("String", "SUPABASE_KEY",  "\"sb_publishable_d8mzJ3iulCU7YdlV_lrdQw_32pOzDXc\"")
-        buildConfigField("String", "BASE_URL",      "\"https://mq.xo.je/\"")
-        buildConfigField("String", "FALLBACK_URL",  "\"https://dde.ct.ws/\"")
+        buildConfigField("String", "SUPABASE_URL", "\"https://dablnrggyfcddmdeiqxi.supabase.co\"")
+        buildConfigField("String", "SUPABASE_KEY", "\"sb_publishable_d8mzJ3iulCU7YdlV_lrdQw_32pOzDXc\"")
+        buildConfigField("String", "BASE_URL",     "\"https://jaynes-api.onrender.com/\"")
     }
 
     signingConfigs {
@@ -31,8 +30,8 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled   = true
-            isShrinkResources = true
+            isMinifyEnabled   = false
+            isShrinkResources = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("release")
         }
@@ -50,18 +49,13 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions { jvmTarget = "17" }
-
-    applicationVariants.all {
-        outputs.all {
-            (this as com.android.build.gradle.internal.api.BaseVariantOutputImpl)
-                .outputFileName = "JaynesMaxTV-v${versionName}-${buildType.name}.apk"
-        }
+    kotlinOptions {
+        jvmTarget = "17"
     }
 }
 
 dependencies {
-    // AndroidX core
+    // Core
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
@@ -70,24 +64,20 @@ dependencies {
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("androidx.viewpager2:viewpager2:1.0.0")
 
-    // ViewModel + LiveData
+    // ViewModel + Coroutines
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
     implementation("androidx.activity:activity-ktx:1.8.2")
-
-    // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
-    // Retrofit + OkHttp (REST API calls)
+    // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
-
-    // Gson
     implementation("com.google.code.gson:gson:2.10.1")
 
-    // ExoPlayer (Media3) — HLS + DASH/MPD support
+    // ExoPlayer (HLS + DASH/MPD)
     implementation("androidx.media3:media3-exoplayer:1.3.0")
     implementation("androidx.media3:media3-exoplayer-hls:1.3.0")
     implementation("androidx.media3:media3-exoplayer-dash:1.3.0")
@@ -95,15 +85,15 @@ dependencies {
     implementation("androidx.media3:media3-common:1.3.0")
     implementation("androidx.media3:media3-session:1.3.0")
 
-    // Glide (image loading)
+    // Glide
     implementation("com.github.bumptech.glide:glide:4.16.0")
 
     // Lottie animation
     implementation("com.airbnb.android:lottie:6.4.0")
 
-    // Shimmer loading effect
+    // Shimmer
     implementation("com.facebook.shimmer:shimmer:0.5.0")
 
-    // Dot indicator for ViewPager2
+    // Dots indicator
     implementation("com.tbuonomo:dotsindicator:5.0")
 }

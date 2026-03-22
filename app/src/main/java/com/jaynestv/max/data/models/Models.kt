@@ -6,13 +6,25 @@ import com.google.gson.annotations.SerializedName
 data class Channel(
     val id: String = "",
     val name: String = "",
+    val title: String = "",
     val logo: String = "",
     @SerializedName("stream_url") val streamUrl: String = "",
     @SerializedName("stream_url_mpd") val streamUrlMpd: String = "",
     val category: String = "",
+    val source: String = "",
     @SerializedName("is_live") val isLive: Boolean = true,
     @SerializedName("is_free") val isFree: Boolean = false,
-    val description: String = ""
+    val description: String = "",
+    val clearkey: ClearKey? = null
+) {
+    val displayName: String get() = title.ifEmpty { name }
+    val clearkeyKid: String get() = clearkey?.kid ?: ""
+    val clearkeyKey: String get() = clearkey?.key ?: ""
+}
+
+data class ClearKey(
+    val kid: String = "",
+    val key: String = ""
 )
 
 // ── Category ─────────────────────────────────────────────────────
@@ -110,4 +122,20 @@ data class SupabaseUser(
 
 data class UserMetadata(
     @SerializedName("full_name") val fullName: String? = null
+)
+
+// ── Payment Response ──────────────────────────────────────────────
+data class PaymentResponse(
+    val success: Boolean,
+    val message: String = "",
+    @com.google.gson.annotations.SerializedName("payment_id") val paymentId: String? = null,
+    val plan: String = "",
+    val amount: Int = 0,
+    val instructions: Map<String, String>? = null
+)
+
+// ── Maintenance Response ──────────────────────────────────────────
+data class MaintenanceResponse(
+    val success: Boolean,
+    val maintenance: Boolean = false
 )

@@ -6,32 +6,31 @@ import retrofit2.http.*
 
 interface ApiService {
 
-    @GET("channels.php")
+    // ── Channels — zote au kwa source/category ──────────────────
+    @GET("channels")
     suspend fun getChannels(
-        @Query("category") category: String? = null
+        @Query("source")   source:   String? = null,  // azam|nbc|local|global|all
+        @Query("category") category: String? = null,  // sports|tamthiliya|muziki|habari
+        @Query("q")        query:    String? = null   // search
     ): Response<ChannelsResponse>
 
-    @GET("categories.php")
+    // ── Categories ───────────────────────────────────────────────
+    @GET("categories")
     suspend fun getCategories(): Response<CategoriesResponse>
 
-    @GET("auth.php")
+    // ── Subscription check ───────────────────────────────────────
+    @GET("subscription/check")
     suspend fun checkSubscription(
-        @Query("action") action: String = "check_sub",
         @Query("email") email: String
     ): Response<SubCheckResponse>
-}
 
-// Supabase Auth — separate interface
-interface SupabaseAuthService {
-
-    @POST("auth/v1/token")
-    suspend fun login(
-        @Query("grant_type") grantType: String = "password",
+    // ── Submit payment ───────────────────────────────────────────
+    @POST("payment/submit")
+    suspend fun submitPayment(
         @Body body: Map<String, String>
-    ): Response<LoginResponse>
+    ): Response<PaymentResponse>
 
-    @POST("auth/v1/recover")
-    suspend fun resetPassword(
-        @Body body: Map<String, String>
-    ): Response<Unit>
+    // ── Maintenance check ────────────────────────────────────────
+    @GET("maintenance")
+    suspend fun checkMaintenance(): Response<MaintenanceResponse>
 }

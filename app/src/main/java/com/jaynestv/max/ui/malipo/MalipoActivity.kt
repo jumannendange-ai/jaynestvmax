@@ -7,18 +7,21 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.jaynestv.max.data.api.RetrofitClient
 import com.jaynestv.max.data.models.PayMethod
 import com.jaynestv.max.data.models.Plan
 import com.jaynestv.max.databinding.ActivityMalipoBinding
+import com.jaynestv.max.utils.Constants
 import com.jaynestv.max.utils.SessionManager
+import kotlinx.coroutines.launch
 
 class MalipoActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMalipoBinding
     private lateinit var session: SessionManager
-
     private var selectedPlan: Plan? = null
     private var selectedMethod: PayMethod? = null
 
@@ -29,55 +32,66 @@ class MalipoActivity : AppCompatActivity() {
         session = SessionManager(this)
 
         binding.btnBack.setOnClickListener { finish() }
-
         setupPlans()
         setupMethods()
-        updatePayInfo()
         checkCurrentSub()
     }
 
     private fun setupPlans() {
-        val planAdapter = PlanAdapter(Plan.getPlans()) { plan ->
+        val adapter = PlanAdapter(Plan.getPlans()) { plan ->
             selectedPlan = plan
             updatePayInfo()
         }
         binding.rvPlans.layoutManager = GridLayoutManager(this, 2)
-        binding.rvPlans.adapter = planAdapter
+        binding.rvPlans.adapter = adapter
     }
 
     private fun setupMethods() {
-        val methodAdapter = MethodAdapter(PayMethod.getMethods()) { method ->
+        val adapter = MethodAdapter(PayMethod.getMethods()) { method ->
             selectedMethod = method
             updatePayInfo()
         }
         binding.rvMethods.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        binding.rvMethods.adapter = methodAdapter
+        binding.rvMethods.adapter = adapter
     }
 
     private fun updatePayInfo() {
-        val plan   = selectedPlan
-        val method = selectedMethod
-
-        if (plan == null || method == null) {
-            binding.payInfoCard.visibility = View.GONE
-            return
-        }
+        val plan   = selectedPlan   ?: return
+        val method = selectedMethod ?: return
 
         binding.payInfoCard.visibility = View.VISIBLE
-        binding.txtPayAmount.text      = "TSh ${plan.price.toFormattedString()}"
+        binding.txtPayAmount.text      = "TSh ${String.format("%,d", plan.price)}"
         binding.txtPayNumber.text      = method.number
 
-        // Steps
         binding.txtStep1.text = "1. Fungua ${method.name} kwenye simu yako"
-        binding.txtStep2.text = "2. Tuma TSh ${plan.price.toFormattedString()} kwa nambari: ${method.number}"
-        binding.txtStep3.text = "3. Weka maelezo: \"${session.getEmail()} ${plan.nameSwahili}\""
-        binding.txtStep4.text = "4. Tutawasiliana nawe mara moja baada ya kuthibitisha malipo"
+        binding.txtStep2.text = "2. Tuma TSh ${String.format("%,d", plan.price)} kwa: ${method.number}"
+        binding.txtStep3.text = "3. Maelezo: \"${session.getEmail()} ${plan.nameSwahili}\""
+        binding.txtStep4.text = "4. Piga picha risiti, wasiliana nasi WhatsApp"
 
-        // Copy number button
         binding.btnCopyNumber.setOnClickListener {
             val cm = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             cm.setPrimaryClip(ClipData.newPlainText("number", method.number))
-            Toast.makeText(this, "Nambari imenakiliwa ✓", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "✓ Nambari imenakiliwa", Toast.LENGTH_SHORT).show()
+        }
+
+        // Submit payment kwenye API
+        binding.payInfoCard.setOnClickListener(null)
+        // Ongeza button ya kutuma
+        submitPaymentToApi(plan, method)
+    }
+
+    private fun submitPaymentToApi(plan: Plan, method: PayMethod) {
+        // Auto-submit kwa API wakati mtumiaji anachagua plan na method
+        lifecycleScope.launch {
+            try {
+                val body = mapOf(
+                    "email"  to session.getEmail(),
+                    "plan"   to plan.id,
+                    "method" to method.id
+                )
+                RetrofitClient.apiService.submitPayment(body)
+                // Imehifadhiwa kwenye API — admin atathibitisha
+            } catch (e: Exception) { /* Ignore silently */ }
         }
     }
 
@@ -94,9 +108,5 @@ class MalipoActivity : AppCompatActivity() {
         } else {
             binding.currentSubCard.visibility = View.GONE
         }
-    }
-
-    private fun Int.toFormattedString(): String {
-        return String.format("%,d", this)
     }
 }
