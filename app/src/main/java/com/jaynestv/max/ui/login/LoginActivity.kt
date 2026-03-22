@@ -5,13 +5,14 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.jaynestv.max.data.api.RetrofitClient
 import com.jaynestv.max.databinding.ActivityLoginBinding
 import com.jaynestv.max.ui.home.HomeActivity
 import com.jaynestv.max.ui.malipo.MalipoActivity
 import com.jaynestv.max.utils.Constants
 import com.jaynestv.max.utils.SessionManager
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import java.io.OutputStreamWriter
 import java.net.HttpURLConnection
@@ -21,6 +22,7 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     private lateinit var session: SessionManager
+    private var isLoginMode = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,17 +32,49 @@ class LoginActivity : AppCompatActivity() {
 
         if (session.isLoggedIn()) { goHome(); return }
 
-        binding.btnLogin.setOnClickListener { doLogin() }
-        binding.btnLipa.setOnClickListener {
-            startActivity(Intent(this, MalipoActivity::class.java))
-        }
+        // ── Tabs ─────────────────────────────────────────────────
+        binding.tabLogin.setOnClickListener    { switchTab(true) }
+        binding.tabRegister.setOnClickListener { switchTab(false) }
+
+        binding.btnLogin.setOnClickListener { if (isLoginMode) doLogin() else doRegister() }
+        binding.btnLipa.setOnClickListener  { startActivity(Intent(this, MalipoActivity::class.java)) }
         binding.txtForgot.setOnClickListener { showResetPanel() }
         binding.txtBackToLogin.setOnClickListener { hideResetPanel() }
         binding.btnReset.setOnClickListener { doReset() }
-        binding.btnEye.setOnClickListener { togglePassword() }
+        binding.btnEye.setOnClickListener   { togglePassword() }
     }
 
-    // ── LOGIN moja kwa moja kwa Supabase ─────────────────────────
+    private fun switchTab(login: Boolean) {
+        isLoginMode = login
+        binding.tabLogin.isSelected    =  login
+        binding.tabRegister.isSelected = !login
+
+        // Rangi za tabs
+        if (login) {
+            binding.tabLogin.setBackgroundResource(com.jaynestv.max.R.drawable.bg_red_btn)
+            binding.tabLogin.setTextColor(android.graphics.Color.WHITE)
+            binding.tabRegister.setBackgroundResource(com.jaynestv.max.R.drawable.bg_plan_normal)
+            binding.tabRegister.setTextColor(android.graphics.Color.parseColor("#666677"))
+        } else {
+            binding.tabRegister.setBackgroundResource(com.jaynestv.max.R.drawable.bg_red_btn)
+            binding.tabRegister.setTextColor(android.graphics.Color.WHITE)
+            binding.tabLogin.setBackgroundResource(com.jaynestv.max.R.drawable.bg_plan_normal)
+            binding.tabLogin.setTextColor(android.graphics.Color.parseColor("#666677"))
+        }
+
+        // Onyesha/ficha fields
+        binding.inputName.visibility   = if (!login) View.VISIBLE else View.GONE
+        binding.labelName.visibility   = if (!login) View.VISIBLE else View.GONE
+        binding.txtForgot.visibility   = if (login)  View.VISIBLE else View.GONE
+        binding.infoBox.visibility     = if (!login) View.VISIBLE else View.GONE
+
+        // Badilisha text ya button
+        binding.btnLoginText.text = if (login) "INGIA NDANI →" else "JIANDIKISHE →"
+
+        hideMsg()
+    }
+
+    // ── LOGIN ─────────────────────────────────────────────────────
     private fun doLogin() {
         val email = binding.inputEmail.text.toString().trim()
         val pass  = binding.inputPassword.text.toString()
@@ -49,61 +83,135 @@ class LoginActivity : AppCompatActivity() {
         setLoading(true)
         lifecycleScope.launch {
             try {
-                val result = supabaseLogin(email, pass)
+                val result = supabaseRequest(
+                    "${Constants.SUPABASE_URL}/auth/v1/token?grant_type=password",
+                    JSONObject().apply { put("email", email); put("password", pass) }
+                )
                 if (result.has("access_token")) {
-                    val token = result.getString("access_token")
-                    val user  = result.optJSONObject("user")
-                    val uid   = user?.optString("id") ?: ""
-                    val meta  = user?.optJSONObject("user_metadata")
-                    val name  = meta?.optString("full_name") ?: email.substringBefore("@")
-
-                    session.saveLogin(token, email, name, uid)
-
-                    // Check subscription kutoka jaynes-api
-                    checkSubscription(email)
-
+                    saveSession(result, email)
+                    checkSubscriptionAndGo(email)
                 } else {
-                    val errMsg = result.optString("error_description")
-                        .ifEmpty { result.optString("message").ifEmpty { "Barua pepe au nywila si sahihi" } }
-                    showError(errMsg)
+                    val err = result.optString("error_description").ifEmpty {
+                        result.optString("message").ifEmpty { "Barua pepe au nywila si sahihi" }
+                    }
+                    showError(err)
                     setLoading(false)
                 }
             } catch (e: Exception) {
-                showError("Hakuna mtandao au server haifikiwi")
+                showError("Hakuna mtandao. Jaribu tena.")
                 setLoading(false)
             }
         }
     }
 
-    // ── Supabase Auth API moja kwa moja (HttpURLConnection) ──────
-    private fun supabaseLogin(email: String, password: String): JSONObject {
-        val url = URL("${Constants.SUPABASE_URL}/auth/v1/token?grant_type=password")
-        val conn = url.openConnection() as HttpURLConnection
-        conn.apply {
-            requestMethod = "POST"
-            setRequestProperty("Content-Type", "application/json")
-            setRequestProperty("apikey", Constants.SUPABASE_KEY)
-            doOutput = true
-            connectTimeout = 15000
-            readTimeout = 20000
+    // ── REGISTER ──────────────────────────────────────────────────
+    private fun doRegister() {
+        val name  = binding.inputName.text.toString().trim()
+        val email = binding.inputEmail.text.toString().trim()
+        val pass  = binding.inputPassword.text.toString()
+
+        if (name.isEmpty())  { showError("Weka jina lako kamili"); return }
+        if (email.isEmpty()) { showError("Weka barua pepe yako"); return }
+        if (pass.length < 6) { showError("Nywila iwe na herufi 6 au zaidi"); return }
+
+        setLoading(true)
+        lifecycleScope.launch {
+            try {
+                val body = JSONObject().apply {
+                    put("email", email)
+                    put("password", pass)
+                    put("data", JSONObject().apply { put("full_name", name) })
+                }
+                val result = supabaseRequest(
+                    "${Constants.SUPABASE_URL}/auth/v1/signup",
+                    body
+                )
+
+                if (result.has("id") || result.has("access_token")) {
+                    // Usajili umefanikiwa
+                    if (result.has("access_token")) {
+                        // Auto-login
+                        saveSession(result, email)
+                        checkSubscriptionAndGo(email)
+                    } else {
+                        // Thibitisha email kwanza
+                        showSuccess("✅ Akaunti imeundwa! Angalia email yako kuithibitisha.")
+                        setLoading(false)
+                        switchTab(true)
+                    }
+                } else {
+                    val err = result.optString("msg").ifEmpty {
+                        result.optString("error_description").ifEmpty {
+                            result.optString("message").ifEmpty { "Usajili umeshindwa" }
+                        }
+                    }
+                    showError(err)
+                    setLoading(false)
+                }
+            } catch (e: Exception) {
+                showError("Hakuna mtandao. Jaribu tena.")
+                setLoading(false)
+            }
         }
-        val body = JSONObject().apply {
-            put("email", email)
-            put("password", password)
-        }
-        OutputStreamWriter(conn.outputStream).use { it.write(body.toString()) }
-        val response = try {
-            conn.inputStream.bufferedReader().readText()
-        } catch (e: Exception) {
-            conn.errorStream?.bufferedReader()?.readText() ?: "{}"
-        }
-        return JSONObject(response)
     }
 
-    // ── Check subscription kutoka jaynes-api.onrender.com ────────
-    private suspend fun checkSubscription(email: String) {
+    // ── RESET PASSWORD ────────────────────────────────────────────
+    private fun doReset() {
+        val email = binding.inputResetEmail.text.toString().trim()
+        if (email.isEmpty()) { showError("Weka barua pepe yako"); return }
+        setLoading(true)
+        lifecycleScope.launch {
+            try {
+                supabaseRequest(
+                    "${Constants.SUPABASE_URL}/auth/v1/recover",
+                    JSONObject().apply { put("email", email) }
+                )
+                showSuccess("✅ Link imetumwa! Angalia email yako.")
+            } catch (e: Exception) {
+                showError("Imeshindwa kutuma link")
+            }
+            setLoading(false)
+        }
+    }
+
+    // ── Supabase HTTP helper ──────────────────────────────────────
+    private suspend fun supabaseRequest(endpoint: String, body: JSONObject): JSONObject {
+        return withContext(Dispatchers.IO) {
+            val conn = URL(endpoint).openConnection() as HttpURLConnection
+            conn.apply {
+                requestMethod = "POST"
+                setRequestProperty("Content-Type", "application/json")
+                setRequestProperty("apikey", Constants.SUPABASE_KEY)
+                doOutput = true
+                connectTimeout = 15000
+                readTimeout = 20000
+            }
+            OutputStreamWriter(conn.outputStream).use { it.write(body.toString()) }
+            val response = try {
+                conn.inputStream.bufferedReader().readText()
+            } catch (e: Exception) {
+                conn.errorStream?.bufferedReader()?.readText() ?: "{}"
+            }
+            JSONObject(response)
+        }
+    }
+
+    private fun saveSession(data: JSONObject, email: String) {
+        val user = data.optJSONObject("user")
+        val meta = user?.optJSONObject("user_metadata")
+        val name = meta?.optString("full_name") ?: email.substringBefore("@")
+        session.saveLogin(
+            token = data.optString("access_token"),
+            email = email,
+            name  = name,
+            uid   = user?.optString("id") ?: ""
+        )
+    }
+
+    private suspend fun checkSubscriptionAndGo(email: String) {
         try {
-            val resp = RetrofitClient.apiService.checkSubscription(email = email)
+            val resp = com.jaynestv.max.data.api.RetrofitClient.apiService
+                .checkSubscription(email = email)
             val data = resp.body()
             if (data?.active == true) {
                 session.saveSubscription("premium", data.endDate)
@@ -113,35 +221,8 @@ class LoginActivity : AppCompatActivity() {
                     session.saveTrialEnd(System.currentTimeMillis() + Constants.TRIAL_MS)
                 }
             }
-        } catch (e: Exception) { /* Endelea hata kama check imeshindwa */ }
+        } catch (e: Exception) { /* Endelea */ }
         runOnUiThread { goHome() }
-    }
-
-    // ── Reset Password ───────────────────────────────────────────
-    private fun doReset() {
-        val email = binding.inputResetEmail.text.toString().trim()
-        if (email.isEmpty()) { showError("Weka barua pepe yako"); return }
-        setLoading(true)
-        lifecycleScope.launch {
-            try {
-                val url  = URL("${Constants.SUPABASE_URL}/auth/v1/recover")
-                val conn = url.openConnection() as HttpURLConnection
-                conn.apply {
-                    requestMethod = "POST"
-                    setRequestProperty("Content-Type", "application/json")
-                    setRequestProperty("apikey", Constants.SUPABASE_KEY)
-                    doOutput = true
-                    connectTimeout = 15000
-                }
-                val body = JSONObject().apply { put("email", email) }
-                OutputStreamWriter(conn.outputStream).use { it.write(body.toString()) }
-                conn.responseCode // trigger request
-                runOnUiThread { showSuccess("✅ Link imetumwa! Angalia email yako.") }
-            } catch (e: Exception) {
-                runOnUiThread { showError("Imeshindwa kutuma link. Jaribu tena.") }
-            }
-            runOnUiThread { setLoading(false) }
-        }
     }
 
     private fun goHome() {
@@ -173,9 +254,9 @@ class LoginActivity : AppCompatActivity() {
     private fun hideMsg() { binding.msgBox.visibility = View.GONE }
 
     private fun setLoading(on: Boolean) {
-        binding.btnLogin.isEnabled         = !on
-        binding.progressLogin.visibility   = if (on) View.VISIBLE else View.GONE
-        binding.btnLoginText.visibility    = if (on) View.GONE    else View.VISIBLE
+        binding.btnLogin.isEnabled       = !on
+        binding.progressLogin.visibility = if (on) View.VISIBLE else View.GONE
+        binding.btnLoginText.visibility  = if (on) View.GONE    else View.VISIBLE
     }
 
     private fun togglePassword() {

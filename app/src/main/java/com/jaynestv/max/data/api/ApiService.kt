@@ -35,7 +35,7 @@ interface ApiService {
     suspend fun checkMaintenance(): Response<MaintenanceResponse>
 }
 
-// Supabase Auth — login moja kwa moja
+// ── Supabase Auth moja kwa moja ──────────────────────────────────
 interface SupabaseAuthService {
     @retrofit2.http.POST("auth/v1/token")
     suspend fun login(

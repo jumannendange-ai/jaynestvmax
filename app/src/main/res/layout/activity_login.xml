@@ -11,13 +11,13 @@
         android:orientation="vertical"
         android:gravity="center"
         android:padding="24dp"
-        android:minHeight="600dp">
+        android:minHeight="640dp">
 
         <!-- Logo -->
         <FrameLayout
             android:layout_width="72dp"
             android:layout_height="72dp"
-            android:layout_marginBottom="16dp">
+            android:layout_marginBottom="14dp">
             <View android:layout_width="72dp" android:layout_height="72dp"
                 android:background="@drawable/circle_red"/>
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -27,11 +27,10 @@
 
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:text="JAYNES MAX TV" android:textColor="@color/white"
-            android:textSize="26sp" android:textStyle="bold" android:letterSpacing="0.2"
-            android:layout_marginBottom="4dp"/>
+            android:textSize="26sp" android:textStyle="bold" android:layout_marginBottom="4dp"/>
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:text="Stream · Live · Enjoy" android:textColor="@color/muted"
-            android:textSize="12sp" android:letterSpacing="0.1" android:layout_marginBottom="32dp"/>
+            android:textSize="12sp" android:layout_marginBottom="28dp"/>
 
         <!-- Card -->
         <LinearLayout
@@ -44,51 +43,71 @@
             <!-- MSG BOX -->
             <LinearLayout android:id="@+id/msgBox"
                 android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:orientation="horizontal" android:gravity="center_vertical"
                 android:padding="12dp" android:layout_marginBottom="12dp"
-                android:background="@drawable/bg_error_msg"
-                android:visibility="gone">
+                android:background="@drawable/bg_error_msg" android:visibility="gone">
                 <TextView android:id="@+id/msgText"
                     android:layout_width="match_parent" android:layout_height="wrap_content"
                     android:textColor="#FF6688" android:textSize="13sp"/>
             </LinearLayout>
 
-            <!-- LOGIN PANEL -->
+            <!-- TABS: INGIA | JIANDIKISHE -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="48dp"
+                android:orientation="horizontal" android:layout_marginBottom="20dp">
+                <Button android:id="@+id/tabLogin"
+                    android:layout_width="0dp" android:layout_height="match_parent"
+                    android:layout_weight="1" android:layout_marginEnd="6dp"
+                    android:background="@drawable/bg_red_btn"
+                    android:text="INGIA" android:textColor="@color/white"
+                    android:textSize="13sp" android:textStyle="bold"/>
+                <Button android:id="@+id/tabRegister"
+                    android:layout_width="0dp" android:layout_height="match_parent"
+                    android:layout_weight="1" android:layout_marginStart="6dp"
+                    android:background="@drawable/bg_plan_normal"
+                    android:text="JIANDIKISHE" android:textColor="@color/muted"
+                    android:textSize="13sp" android:textStyle="bold"/>
+            </LinearLayout>
+
+            <!-- LOGIN / REGISTER PANEL -->
             <LinearLayout android:id="@+id/loginPanel"
                 android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:text="INGIA AKAUNTI" android:textColor="@color/white"
-                    android:textSize="20sp" android:textStyle="bold" android:letterSpacing="0.1"
-                    android:layout_marginBottom="4dp"/>
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:text="Weka barua pepe na nywila yako" android:textColor="@color/muted"
-                    android:textSize="12sp" android:layout_marginBottom="18dp"/>
+                <!-- Name (register only) -->
+                <TextView android:id="@+id/labelName"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="JINA KAMILI" android:textColor="@color/muted"
+                    android:textSize="10sp" android:layout_marginBottom="6dp"
+                    android:visibility="gone"/>
+                <EditText android:id="@+id/inputName"
+                    android:layout_width="match_parent" android:layout_height="52dp"
+                    android:background="@drawable/bg_input" android:padding="14dp"
+                    android:hint="Jina lako kamili" android:textColor="@color/text"
+                    android:textSize="14sp" android:inputType="textPersonName"
+                    android:layout_marginBottom="10dp" android:visibility="gone"/>
 
                 <!-- Email -->
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:text="BARUA PEPE" android:textColor="@color/muted"
-                    android:textSize="10sp" android:letterSpacing="0.1" android:layout_marginBottom="6dp"/>
+                    android:textSize="10sp" android:layout_marginBottom="6dp"/>
                 <EditText android:id="@+id/inputEmail"
                     android:layout_width="match_parent" android:layout_height="52dp"
                     android:background="@drawable/bg_input" android:padding="14dp"
-                    android:hint="mfano@email.com" 
-                    android:textColor="@color/text" android:textSize="14sp"
-                    android:inputType="textEmailAddress" android:layout_marginBottom="10dp"/>
+                    android:hint="mfano@email.com" android:textColor="@color/text"
+                    android:textSize="14sp" android:inputType="textEmailAddress"
+                    android:layout_marginBottom="10dp"/>
 
                 <!-- Password -->
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:text="NYWILA" android:textColor="@color/muted"
-                    android:textSize="10sp" android:letterSpacing="0.1" android:layout_marginBottom="6dp"/>
+                    android:textSize="10sp" android:layout_marginBottom="6dp"/>
                 <FrameLayout android:layout_width="match_parent" android:layout_height="52dp"
                     android:layout_marginBottom="6dp">
                     <EditText android:id="@+id/inputPassword"
                         android:layout_width="match_parent" android:layout_height="match_parent"
                         android:background="@drawable/bg_input" android:padding="14dp"
-                        android:paddingEnd="48dp" android:hint="••••••••"
-                         android:textColor="@color/text"
-                        android:textSize="14sp" android:inputType="textPassword"/>
+                        android:paddingEnd="50dp" android:hint="••••••••"
+                        android:textColor="@color/text" android:textSize="14sp"
+                        android:inputType="textPassword"/>
                     <ImageButton android:id="@+id/btnEye"
                         android:layout_width="44dp" android:layout_height="match_parent"
                         android:layout_gravity="end" android:background="@null"
@@ -102,14 +121,14 @@
                     android:textSize="12sp" android:layout_gravity="end"
                     android:layout_marginBottom="18dp" android:padding="4dp"/>
 
-                <!-- Login button -->
+                <!-- Login/Register button -->
                 <FrameLayout android:layout_width="match_parent" android:layout_height="52dp"
                     android:layout_marginBottom="16dp">
                     <Button android:id="@+id/btnLogin"
                         android:layout_width="match_parent" android:layout_height="match_parent"
-                        android:background="@drawable/bg_red_btn" android:text="INGIA NDANI →"
-                        android:textColor="@color/white" android:textSize="14sp"
-                        android:textStyle="bold" android:letterSpacing="0.08"/>
+                        android:background="@drawable/bg_red_btn"
+                        android:text="INGIA NDANI →" android:textColor="@color/white"
+                        android:textSize="14sp" android:textStyle="bold"/>
                     <ProgressBar android:id="@+id/progressLogin"
                         android:layout_width="24dp" android:layout_height="24dp"
                         android:layout_gravity="center" android:indeterminate="true"
@@ -121,58 +140,51 @@
                         android:textStyle="bold"/>
                 </FrameLayout>
 
-                <!-- Divider -->
-                <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:text="au" android:textColor="@color/muted" android:textSize="12sp"
-                    android:gravity="center" android:layout_marginBottom="14dp"/>
-
-                <!-- Info box -->
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                <!-- Info box (register) -->
+                <LinearLayout android:id="@+id/infoBox"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
                     android:orientation="vertical" android:padding="14dp"
-                    android:background="@drawable/bg_error_msg" android:layout_marginBottom="14dp">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="ℹ️  Usajili unapatikana baada ya malipo.\nLipa kwanza, utapata akaunti moja kwa moja."
-                        android:textColor="@color/muted" android:textSize="12sp" android:lineSpacingMultiplier="1.5"
+                    android:background="@drawable/bg_card" android:visibility="gone">
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:text="Baada ya usajili, utaweza kutumia app kwa dakika 30 bure. Kisha lipa ili uendelee."
+                        android:textColor="@color/muted" android:textSize="12sp"
                         android:layout_marginBottom="10dp"/>
                     <Button android:id="@+id/btnLipa"
                         android:layout_width="match_parent" android:layout_height="44dp"
-                        android:background="@drawable/bg_red_btn" android:text="💳  LIPA SASA"
-                        android:textColor="@color/white" android:textSize="13sp" android:textStyle="bold"/>
+                        android:background="@drawable/bg_outline_btn"
+                        android:text="ANGALIA MIPANGO YA BEI"
+                        android:textColor="@color/red" android:textSize="13sp"
+                        android:textStyle="bold"/>
                 </LinearLayout>
 
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:text="Msaada? WhatsApp: 0616 393 956" android:textColor="@color/muted"
-                    android:textSize="11sp" android:gravity="center"/>
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:text="Msaada? WhatsApp: 0616 393 956"
+                    android:textColor="@color/muted" android:textSize="11sp"
+                    android:gravity="center" android:layout_marginTop="8dp"/>
             </LinearLayout>
 
             <!-- RESET PANEL -->
             <LinearLayout android:id="@+id/resetPanel"
                 android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:orientation="vertical" android:visibility="gone">
-
                 <TextView android:id="@+id/txtBackToLogin"
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:text="← Rudi Ingia" android:textColor="@color/red"
-                    android:textSize="13sp" android:layout_marginBottom="16dp" android:padding="4dp"/>
-
+                    android:textSize="13sp" android:layout_marginBottom="16dp"/>
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:text="RUDISHA NYWILA" android:textColor="@color/white"
-                    android:textSize="20sp" android:textStyle="bold" android:layout_marginBottom="6dp"/>
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:text="Tutakutumia link ya kupanga upya nywila"
-                    android:textColor="@color/muted" android:textSize="12sp" android:layout_marginBottom="18dp"/>
-
+                    android:textSize="20sp" android:textStyle="bold" android:layout_marginBottom="18dp"/>
                 <EditText android:id="@+id/inputResetEmail"
                     android:layout_width="match_parent" android:layout_height="52dp"
                     android:background="@drawable/bg_input" android:padding="14dp"
-                    android:hint="Barua pepe yako" 
-                    android:textColor="@color/text" android:textSize="14sp"
-                    android:inputType="textEmailAddress" android:layout_marginBottom="14dp"/>
-
+                    android:hint="Barua pepe yako" android:textColor="@color/text"
+                    android:textSize="14sp" android:inputType="textEmailAddress"
+                    android:layout_marginBottom="14dp"/>
                 <Button android:id="@+id/btnReset"
                     android:layout_width="match_parent" android:layout_height="52dp"
-                    android:background="@drawable/bg_red_btn" android:text="📨  TUMA LINK"
-                    android:textColor="@color/white" android:textSize="14sp" android:textStyle="bold"/>
+                    android:background="@drawable/bg_red_btn" android:text="TUMA LINK"
+                    android:textColor="@color/white" android:textSize="14sp"
+                    android:textStyle="bold"/>
             </LinearLayout>
 
         </LinearLayout>

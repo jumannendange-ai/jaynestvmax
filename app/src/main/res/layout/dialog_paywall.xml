@@ -1,32 +1,179 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="wrap_content"
-    android:orientation="vertical" android:background="@color/surface"
-    android:padding="24dp">
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:text="👑" android:textSize="40sp" android:layout_gravity="center"
-        android:layout_marginBottom="8dp"/>
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:text="CHANNEL YA PREMIUM" android:textColor="@color/white"
-        android:textSize="18sp" android:textStyle="bold" android:letterSpacing="0.1"
-        android:layout_gravity="center" android:layout_marginBottom="8dp"/>
-    <TextView android:id="@+id/txtChannelName"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:textColor="@color/text" android:textSize="14sp"
-        android:background="@drawable/bg_card" android:padding="8dp"
-        android:layout_gravity="center" android:layout_marginBottom="12dp"/>
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:text="Channel hii inahitaji subscription ya premium.\nJiunge sasa — bei nafuu!"
-        android:textColor="@color/muted" android:textSize="13sp" android:gravity="center"
-        android:layout_gravity="center" android:lineSpacingMultiplier="1.5"
-        android:layout_marginBottom="20dp"/>
-    <Button android:id="@+id/btnLipa"
-        android:layout_width="match_parent" android:layout_height="50dp"
-        android:background="@drawable/bg_red_btn" android:text="💳  LIPA SASA"
-        android:textColor="@color/white" android:textSize="15sp"
-        android:textStyle="bold" android:layout_marginBottom="10dp"/>
-    <Button android:id="@+id/btnClose"
-        android:layout_width="match_parent" android:layout_height="44dp"
-        android:background="@drawable/bg_plan_normal" android:text="← Rudi"
-        android:textColor="@color/muted" android:textSize="13sp"/>
-</LinearLayout>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/surface">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <!-- Handle bar -->
+        <View android:layout_width="40dp" android:layout_height="4dp"
+            android:layout_gravity="center" android:layout_marginBottom="16dp"
+            android:background="#333333"/>
+
+        <!-- Icon + Title -->
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="👑" android:textSize="44sp" android:layout_gravity="center"
+            android:layout_marginBottom="8dp"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="CHANNEL YA PREMIUM" android:textColor="@color/white"
+            android:textSize="18sp" android:textStyle="bold" android:letterSpacing="0.1"
+            android:layout_gravity="center" android:layout_marginBottom="6dp"/>
+
+        <!-- Channel name -->
+        <TextView android:id="@+id/txtChannelName"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:textColor="@color/text" android:textSize="14sp"
+            android:background="@drawable/bg_card" android:padding="8dp"
+            android:layout_gravity="center" android:layout_marginBottom="16dp"/>
+
+        <!-- Packages grid -->
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="CHAGUA MPANGO" android:textColor="@color/muted"
+            android:textSize="10sp" android:letterSpacing="0.15" android:layout_marginBottom="8dp"/>
+
+        <GridLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:columnCount="2" android:useDefaultMargins="false"
+            android:layout_marginBottom="14dp">
+
+            <!-- Wiki -->
+            <LinearLayout android:id="@+id/pkg1"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" android:layout_margin="4dp"
+                android:orientation="vertical" android:gravity="center"
+                android:background="@drawable/bg_plan_normal" android:padding="12dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="WIKI" android:textColor="@color/text"
+                    android:textSize="13sp" android:textStyle="bold"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="TSh 500" android:textColor="@color/red"
+                    android:textSize="18sp" android:textStyle="bold"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="siku 7" android:textColor="@color/muted" android:textSize="10sp"/>
+            </LinearLayout>
+
+            <!-- Mwezi (popular) -->
+            <LinearLayout android:id="@+id/pkg2"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" android:layout_margin="4dp"
+                android:orientation="vertical" android:gravity="center"
+                android:background="@drawable/bg_plan_selected" android:padding="12dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="⭐ MWEZI" android:textColor="@color/white"
+                    android:textSize="13sp" android:textStyle="bold"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="TSh 1,500" android:textColor="@color/red"
+                    android:textSize="18sp" android:textStyle="bold"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="siku 30" android:textColor="@color/muted" android:textSize="10sp"/>
+            </LinearLayout>
+
+            <!-- Miezi 3 -->
+            <LinearLayout android:id="@+id/pkg3"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" android:layout_margin="4dp"
+                android:orientation="vertical" android:gravity="center"
+                android:background="@drawable/bg_plan_normal" android:padding="12dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="MIEZI 3" android:textColor="@color/text"
+                    android:textSize="13sp" android:textStyle="bold"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="TSh 3,500" android:textColor="@color/red"
+                    android:textSize="18sp" android:textStyle="bold"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="siku 90" android:textColor="@color/muted" android:textSize="10sp"/>
+            </LinearLayout>
+
+            <!-- Mwaka -->
+            <LinearLayout android:id="@+id/pkg4"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_columnWeight="1" android:layout_margin="4dp"
+                android:orientation="vertical" android:gravity="center"
+                android:background="@drawable/bg_plan_normal" android:padding="12dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="MWAKA" android:textColor="@color/text"
+                    android:textSize="13sp" android:textStyle="bold"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="TSh 10,000" android:textColor="@color/red"
+                    android:textSize="18sp" android:textStyle="bold"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="siku 365" android:textColor="@color/muted" android:textSize="10sp"/>
+            </LinearLayout>
+
+        </GridLayout>
+
+        <!-- Pay number -->
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="NAMBARI YA MALIPO" android:textColor="@color/muted"
+            android:textSize="10sp" android:letterSpacing="0.15" android:layout_marginBottom="8dp"/>
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="56dp"
+            android:orientation="horizontal" android:gravity="center_vertical"
+            android:background="@drawable/bg_card" android:padding="14dp"
+            android:layout_marginBottom="8dp">
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1" android:orientation="vertical">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="M-PESA / TIGO / AIRTEL / HALO"
+                    android:textColor="@color/muted" android:textSize="10sp"/>
+                <TextView android:id="@+id/txtPayNumber"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="0616 393 956" android:textColor="@color/red"
+                    android:textSize="20sp" android:textStyle="bold"/>
+            </LinearLayout>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="📋 NAKILI" android:textColor="@color/red"
+                android:textSize="11sp" android:textStyle="bold"
+                android:background="@drawable/bg_outline_btn" android:padding="8dp"/>
+        </LinearLayout>
+
+        <!-- WhatsApp -->
+        <Button android:id="@+id/btnWhatsapp"
+            android:layout_width="match_parent" android:layout_height="52dp"
+            android:background="@drawable/bg_plan_normal"
+            android:text="📲  WASILIANA NASI WHATSAPP"
+            android:textColor="#25D366" android:textSize="13sp"
+            android:textStyle="bold" android:layout_marginBottom="8dp"/>
+
+        <!-- LIPA SASA -->
+        <Button android:id="@+id/btnLipa"
+            android:layout_width="match_parent" android:layout_height="54dp"
+            android:background="@drawable/bg_red_btn"
+            android:text="💳  LIPA SASA — ANGALIA MALIPO"
+            android:textColor="@color/white" android:textSize="14sp"
+            android:textStyle="bold" android:layout_marginBottom="10dp"/>
+
+        <!-- Perks -->
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="vertical" android:background="@drawable/bg_card"
+            android:padding="14dp" android:layout_marginBottom="10dp">
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="✅  Azam Sports 1, 2, 3, 4 — LIVE HD"
+                android:textColor="@color/text" android:textSize="12sp" android:layout_marginBottom="6dp"/>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="✅  NBC Premier League — Mechi zote"
+                android:textColor="@color/text" android:textSize="12sp" android:layout_marginBottom="6dp"/>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="✅  Tamthiliya, Muziki, Watoto, na zaidi"
+                android:textColor="@color/text" android:textSize="12sp" android:layout_marginBottom="6dp"/>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="✅  Bila matangazo — streaming safi"
+                android:textColor="@color/text" android:textSize="12sp"/>
+        </LinearLayout>
+
+        <!-- Rudi -->
+        <Button android:id="@+id/btnClose"
+            android:layout_width="match_parent" android:layout_height="46dp"
+            android:background="@drawable/bg_plan_normal"
+            android:text="← RUDI — CHANNELS ZA BURE"
+            android:textColor="@color/muted" android:textSize="12sp"
+            android:textStyle="bold"/>
+
+
+
+    </LinearLayout>
+</ScrollView>

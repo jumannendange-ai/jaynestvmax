@@ -130,14 +130,14 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun openChannel(channel: Channel) {
-        if (!session.isFreeChannel(channel.name) && !session.hasAnyAccess()) {
+        if (!session.isFreeChannel(channel.displayName) && !session.hasAnyAccess()) {
             PaywallDialog(channel.name) {
                 startActivity(Intent(this, MalipoActivity::class.java))
             }.show(supportFragmentManager, "paywall")
             return
         }
         val intent = Intent(this, PlayerActivity::class.java).apply {
-            putExtra(PlayerActivity.EXTRA_CHANNEL_NAME, channel.name)
+            putExtra(PlayerActivity.EXTRA_CHANNEL_NAME, channel.displayName)
             putExtra(PlayerActivity.EXTRA_STREAM_URL,   channel.streamUrl)
             putExtra(PlayerActivity.EXTRA_STREAM_MPD,   channel.streamUrlMpd)
             putExtra(PlayerActivity.EXTRA_IS_LIVE,      channel.isLive)

@@ -27,7 +27,7 @@ class ChannelAdapter(
         val ch = getItem(position)
         val b  = holder.b
 
-        b.txtChannelName.text = ch.name
+        b.txtChannelName.text = ch.displayName
         b.txtCategory.text    = ch.category
 
         // Logo
@@ -41,7 +41,7 @@ class ChannelAdapter(
         b.badgeLive.visibility = if (ch.isLive) View.VISIBLE else View.GONE
 
         // PREMIUM / FREE badge
-        val isFree = session.isFreeChannel(ch.name) || ch.isFree
+        val isFree = session.isFreeChannel(ch.displayName) || ch.isFree
         val hasAccess = session.hasAnyAccess()
         when {
             isFree -> {
