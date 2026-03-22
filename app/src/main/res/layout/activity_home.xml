@@ -249,7 +249,7 @@
             <EditText android:id="@+id/inputSearch"
                 android:layout_width="match_parent" android:layout_height="match_parent"
                 android:background="@null" android:padding="10dp" android:hint="Tafuta channels..."
-                android:hintTextColor="@color/muted" android:textColor="@color/text"
+                 android:textColor="@color/text"
                 android:textSize="13sp" android:imeOptions="actionSearch" android:singleLine="true"/>
         </FrameLayout>
     </LinearLayout>

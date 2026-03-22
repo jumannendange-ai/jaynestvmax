@@ -73,7 +73,7 @@
                 <EditText android:id="@+id/inputEmail"
                     android:layout_width="match_parent" android:layout_height="52dp"
                     android:background="@drawable/bg_input" android:padding="14dp"
-                    android:hint="mfano@email.com" android:hintTextColor="@color/muted"
+                    android:hint="mfano@email.com" 
                     android:textColor="@color/text" android:textSize="14sp"
                     android:inputType="textEmailAddress" android:layout_marginBottom="10dp"/>
 
@@ -87,7 +87,7 @@
                         android:layout_width="match_parent" android:layout_height="match_parent"
                         android:background="@drawable/bg_input" android:padding="14dp"
                         android:paddingEnd="48dp" android:hint="••••••••"
-                        android:hintTextColor="@color/muted" android:textColor="@color/text"
+                         android:textColor="@color/text"
                         android:textSize="14sp" android:inputType="textPassword"/>
                     <ImageButton android:id="@+id/btnEye"
                         android:layout_width="44dp" android:layout_height="match_parent"
@@ -165,7 +165,7 @@
                 <EditText android:id="@+id/inputResetEmail"
                     android:layout_width="match_parent" android:layout_height="52dp"
                     android:background="@drawable/bg_input" android:padding="14dp"
-                    android:hint="Barua pepe yako" android:hintTextColor="@color/muted"
+                    android:hint="Barua pepe yako" 
                     android:textColor="@color/text" android:textSize="14sp"
                     android:inputType="textEmailAddress" android:layout_marginBottom="14dp"/>
 
