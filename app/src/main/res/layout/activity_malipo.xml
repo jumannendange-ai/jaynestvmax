@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:background="@color/bg">
+
+    <!-- Topbar -->
+    <LinearLayout android:layout_width="match_parent" android:layout_height="56dp"
+        android:orientation="horizontal" android:gravity="center_vertical"
+        android:background="@drawable/bg_topbar" android:paddingStart="14dp" android:paddingEnd="14dp">
+        <ImageButton android:id="@+id/btnBack"
+            android:layout_width="38dp" android:layout_height="38dp"
+            android:background="@drawable/bg_plan_normal" android:src="@android:drawable/ic_media_previous"
+            android:tint="@color/red" android:scaleType="center"/>
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1" android:text="MALIPO" android:textColor="@color/white"
+            android:textSize="18sp" android:textStyle="bold" android:letterSpacing="0.15"
+            android:paddingStart="12dp"/>
+    </LinearLayout>
+
+    <ScrollView android:layout_width="match_parent" android:layout_height="0dp"
+        android:layout_weight="1">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="vertical" android:padding="14dp">
+
+            <!-- Current sub card -->
+            <LinearLayout android:id="@+id/currentSubCard"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:background="@drawable/bg_card"
+                android:padding="14dp" android:layout_marginBottom="14dp" android:visibility="gone">
+                <TextView android:id="@+id/txtSubStatus"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:textColor="@color/green" android:textSize="14sp" android:textStyle="bold"/>
+                <TextView android:id="@+id/txtSubEnd"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:textColor="@color/muted" android:textSize="12sp" android:layout_marginTop="4dp"/>
+            </LinearLayout>
+
+            <!-- Plans label -->
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="CHAGUA MPANGO" android:textColor="@color/muted"
+                android:textSize="11sp" android:letterSpacing="0.15" android:layout_marginBottom="8dp"/>
+
+            <!-- Plans grid -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvPlans"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false" android:layout_marginBottom="16dp"/>
+
+            <!-- Methods label -->
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="NJIA YA MALIPO" android:textColor="@color/muted"
+                android:textSize="11sp" android:letterSpacing="0.15" android:layout_marginBottom="8dp"/>
+
+            <!-- Methods horizontal -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMethods"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false" android:layout_marginBottom="16dp"/>
+
+            <!-- Pay info card -->
+            <LinearLayout android:id="@+id/payInfoCard"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:background="@drawable/bg_card"
+                android:padding="16dp" android:visibility="gone">
+
+                <!-- Amount -->
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="KIASI" android:textColor="@color/muted"
+                    android:textSize="10sp" android:letterSpacing="0.1"/>
+                <TextView android:id="@+id/txtPayAmount"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:textColor="@color/gold" android:textSize="32sp" android:textStyle="bold"
+                    android:layout_marginBottom="12dp"/>
+
+                <!-- Number to send to -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="52dp"
+                    android:orientation="horizontal" android:gravity="center_vertical"
+                    android:background="@drawable/bg_input" android:paddingStart="14dp"
+                    android:paddingEnd="8dp" android:layout_marginBottom="14dp">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                        <![CDATA[]]>
+                    </TextView>
+                    <TextView android:id="@+id/txtPayNumber"
+                        android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:textColor="@color/red"
+                        android:textSize="18sp" android:textStyle="bold"/>
+                    <Button android:id="@+id/btnCopyNumber"
+                        android:layout_width="wrap_content" android:layout_height="36dp"
+                        android:background="@drawable/bg_outline_btn" android:text="NAKILI"
+                        android:textColor="@color/red" android:textSize="11sp"
+                        android:textStyle="bold" android:paddingStart="10dp" android:paddingEnd="10dp"/>
+                </LinearLayout>
+
+                <!-- Steps -->
+                <TextView android:id="@+id/txtStep1" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:textColor="@color/text"
+                    android:textSize="13sp" android:lineSpacingMultiplier="1.4" android:layout_marginBottom="6dp"/>
+                <TextView android:id="@+id/txtStep2" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:textColor="@color/text"
+                    android:textSize="13sp" android:lineSpacingMultiplier="1.4" android:layout_marginBottom="6dp"/>
+                <TextView android:id="@+id/txtStep3" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:textColor="@color/text"
+                    android:textSize="13sp" android:lineSpacingMultiplier="1.4" android:layout_marginBottom="6dp"/>
+                <TextView android:id="@+id/txtStep4" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:textColor="@color/muted"
+                    android:textSize="12sp" android:lineSpacingMultiplier="1.4"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="red">#E8001D</color>
+    <color name="red_dark">#C8001A</color>
+    <color name="red_dim">#1A0005</color>
+    <color name="bg">#080808</color>
+    <color name="surface">#0F0F0F</color>
+    <color name="card">#111111</color>
+    <color name="card2">#141414</color>
+    <color name="border">#1F1F1F</color>
+    <color name="muted">#666677</color>
+    <color name="text">#F2F2F2</color>
+    <color name="white">#FFFFFF</color>
+    <color name="gold">#FFD700</color>
+    <color name="green">#00CC66</color>
+    <color name="transparent">#00000000</color>
+</resources>

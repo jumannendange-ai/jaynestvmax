@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:layout_margin="5dp" android:background="@drawable/bg_channel_card">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <FrameLayout android:layout_width="match_parent" android:layout_height="100dp">
+            <ImageView android:id="@+id/imgLogo"
+                android:layout_width="match_parent" android:layout_height="match_parent"
+                android:scaleType="centerCrop" android:background="@drawable/ic_channel_placeholder"/>
+            <TextView android:id="@+id/badgeLive"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text=" LIVE " android:textColor="@color/white" android:textSize="9sp"
+                android:textStyle="bold" android:background="@drawable/bg_badge_live"
+                android:layout_gravity="top|end" android:layout_margin="6dp" android:padding="2dp"/>
+            <TextView android:id="@+id/badgeAccess"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="PREMIUM" android:textColor="@color/white" android:textSize="8sp"
+                android:textStyle="bold" android:background="@drawable/bg_badge_premium"
+                android:layout_gravity="top|start" android:layout_margin="6dp" android:padding="3dp"
+                android:visibility="gone"/>
+        </FrameLayout>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="vertical" android:padding="10dp">
+            <TextView android:id="@+id/txtChannelName"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:textColor="@color/text" android:textSize="12sp" android:textStyle="bold"
+                android:maxLines="1" android:ellipsize="end"/>
+            <TextView android:id="@+id/txtCategory"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:textColor="@color/muted" android:textSize="10sp" android:layout_marginTop="2dp"/>
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

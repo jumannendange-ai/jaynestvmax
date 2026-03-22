@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:orientation="vertical" android:gravity="center"
+    android:background="@drawable/bg_plan_normal"
+    android:padding="14dp" android:layout_margin="5dp">
+    <TextView android:id="@+id/badgePopular"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="⭐ MAARUFU" android:textColor="@color/gold" android:textSize="9sp"
+        android:textStyle="bold" android:letterSpacing="0.05"
+        android:layout_marginBottom="6dp" android:visibility="gone"/>
+    <TextView android:id="@+id/txtPlanName"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:textColor="@color/text" android:textSize="15sp" android:textStyle="bold"
+        android:letterSpacing="0.1" android:layout_marginBottom="8dp"/>
+    <TextView android:id="@+id/txtPlanPrice"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:textColor="@color/red" android:textSize="22sp" android:textStyle="bold"
+        android:layout_marginBottom="4dp"/>
+    <TextView android:id="@+id/txtDuration"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:textColor="@color/muted" android:textSize="10sp"/>
+</LinearLayout>

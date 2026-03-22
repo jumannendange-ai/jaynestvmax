@@ -1,0 +1,3 @@
+-keep class com.jaynestv.max.** { *; }
+-keep class androidx.media3.** { *; }
+-dontwarn androidx.media3.**
