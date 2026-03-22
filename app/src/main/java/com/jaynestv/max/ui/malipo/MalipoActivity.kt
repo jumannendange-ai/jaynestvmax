@@ -66,7 +66,6 @@ class MalipoActivity : AppCompatActivity() {
         binding.payInfoCard.visibility = View.VISIBLE
         binding.txtPayAmount.text      = "TSh ${plan.price.toFormattedString()}"
         binding.txtPayNumber.text      = method.number
-        binding.txtPayName.text        = "${method.name} — ${method.number}"
 
         // Steps
         binding.txtStep1.text = "1. Fungua ${method.name} kwenye simu yako"
