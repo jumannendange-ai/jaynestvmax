@@ -36,7 +36,7 @@ class OnboardingActivity : AppCompatActivity() {
 
     private fun setupViewPager() {
         binding.viewPager.adapter = OnboardingAdapter(pages)
-        binding.dotsIndicator.attachTo(binding.viewPager)
+        // dots disabled
 
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {

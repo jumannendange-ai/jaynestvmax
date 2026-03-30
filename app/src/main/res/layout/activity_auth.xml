@@ -1,41 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:orientation="vertical" android:gravity="center"
-    android:background="#0D0D0D" android:padding="24dp">
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:text="JAYNES MAX TV" android:textColor="#E50914"
-        android:textSize="28sp" android:textStyle="bold" android:layout_marginBottom="32dp"/>
-    <EditText android:id="@+id/etEmail" android:layout_width="match_parent"
-        android:layout_height="wrap_content" android:hint="Barua pepe"
-        android:inputType="textEmailAddress" android:textColor="#FFFFFF"
-        android:textColorHint="#666666" android:backgroundTint="#333333" android:padding="12dp"/>
-    <EditText android:id="@+id/etPassword" android:layout_width="match_parent"
-        android:layout_height="wrap_content" android:hint="Nywila"
-        android:inputType="textPassword" android:textColor="#FFFFFF"
-        android:textColorHint="#666666" android:backgroundTint="#333333"
-        android:padding="12dp" android:layout_marginTop="12dp"/>
-    <EditText android:id="@+id/etName" android:layout_width="match_parent"
-        android:layout_height="wrap_content" android:hint="Jina lako"
-        android:inputType="textPersonName" android:textColor="#FFFFFF"
-        android:textColorHint="#666666" android:backgroundTint="#333333"
-        android:padding="12dp" android:layout_marginTop="12dp" android:visibility="gone"/>
-    <Button android:id="@+id/btnLogin" android:layout_width="match_parent"
-        android:layout_height="56dp" android:text="INGIA"
-        android:backgroundTint="#E50914" android:textColor="#FFFFFF"
-        android:textStyle="bold" android:layout_marginTop="24dp"/>
-    <Button android:id="@+id/btnRegister" android:layout_width="match_parent"
-        android:layout_height="56dp" android:text="JISAJILI"
-        android:backgroundTint="#222222" android:textColor="#FFFFFF"
-        android:layout_marginTop="8dp"/>
-    <Button android:id="@+id/btnGuest" android:layout_width="match_parent"
-        android:layout_height="48dp" android:text="Endelea bila akaunti"
-        android:backgroundTint="@android:color/transparent" android:textColor="#888888"
-        android:layout_marginTop="8dp"/>
-    <ProgressBar android:id="@+id/progressBar" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" android:visibility="gone"
-        android:layout_marginTop="16dp"/>
-    <TextView android:id="@+id/tvToggle" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" android:text="Huna akaunti? Jisajili"
-        android:textColor="#888888" android:layout_marginTop="16dp"/>
-</LinearLayout>
+    android:background="#0D0D0D">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:gravity="center_horizontal"
+        android:padding="24dp">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="JAYNES MAX TV" android:textColor="#E50914"
+            android:textSize="28sp" android:textStyle="bold" android:layout_marginTop="48dp"/>
+        <TextView android:id="@+id/tvTitle"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:textColor="#FFFFFF" android:textSize="22sp" android:textStyle="bold"
+            android:layout_marginTop="32dp"/>
+        <TextView android:id="@+id/tvSubtitle"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:textColor="#888888" android:textSize="14sp" android:layout_marginTop="4dp"/>
+        <LinearLayout android:id="@+id/layoutName"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="vertical" android:layout_marginTop="24dp" android:visibility="gone">
+            <EditText android:id="@+id/etName" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:hint="Jina lako"
+                android:inputType="textPersonName" android:textColor="#FFFFFF"
+                android:textColorHint="#666666" android:backgroundTint="#333333" android:padding="12dp"/>
+        </LinearLayout>
+        <LinearLayout android:id="@+id/layoutPhone"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="vertical" android:layout_marginTop="12dp" android:visibility="gone">
+            <EditText android:id="@+id/etPhone" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:hint="Nambari ya simu"
+                android:inputType="phone" android:textColor="#FFFFFF"
+                android:textColorHint="#666666" android:backgroundTint="#333333" android:padding="12dp"/>
+        </LinearLayout>
+        <EditText android:id="@+id/etEmail" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:hint="Barua pepe"
+            android:inputType="textEmailAddress" android:textColor="#FFFFFF"
+            android:textColorHint="#666666" android:backgroundTint="#333333"
+            android:padding="12dp" android:layout_marginTop="12dp"/>
+        <EditText android:id="@+id/etPassword" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:hint="Nywila"
+            android:inputType="textPassword" android:textColor="#FFFFFF"
+            android:textColorHint="#666666" android:backgroundTint="#333333"
+            android:padding="12dp" android:layout_marginTop="12dp"/>
+        <TextView android:id="@+id/tvForgotPassword"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="Umesahau nywila?" android:textColor="#888888"
+            android:layout_gravity="end" android:padding="8dp"/>
+        <Button android:id="@+id/btnSubmit" android:layout_width="match_parent"
+            android:layout_height="56dp" android:backgroundTint="#E50914"
+            android:textColor="#FFFFFF" android:textStyle="bold" android:layout_marginTop="16dp"/>
+        <ProgressBar android:id="@+id/progressBar" android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:visibility="gone" android:layout_marginTop="8dp"/>
+        <TextView android:id="@+id/tvToggleMode"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:textColor="#888888" android:layout_marginTop="16dp" android:padding="8dp"/>
+    </LinearLayout>
+</ScrollView>
