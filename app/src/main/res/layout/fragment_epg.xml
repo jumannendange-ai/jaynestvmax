@@ -2,9 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical" android:background="#0D0D0D">
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:text="Ratiba ya Programu" android:textColor="#FFFFFF"
-        android:textSize="18sp" android:textStyle="bold" android:padding="16dp"/>
+    <HorizontalScrollView android:layout_width="match_parent" android:layout_height="wrap_content">
+        <com.google.android.material.chip.ChipGroup android:id="@+id/chipGroupDays"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:padding="8dp"/>
+    </HorizontalScrollView>
     <ProgressBar android:id="@+id/progressBar"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal" android:visibility="gone"/>
