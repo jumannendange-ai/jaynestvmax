@@ -1,17 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:orientation="vertical" android:background="#0D0D0D">
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:text="JAYNES MAX TV" android:textColor="#E50914"
-        android:textSize="20sp" android:textStyle="bold" android:padding="16dp"/>
-    <androidx.recyclerview.widget.RecyclerView android:id="@+id/rvFeatured"
-        android:layout_width="match_parent" android:layout_height="180dp"/>
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:text="Channels" android:textColor="#FFFFFF"
-        android:textSize="16sp" android:textStyle="bold"
-        android:padding="16dp"/>
-    <androidx.recyclerview.widget.RecyclerView android:id="@+id/rvChannels"
-        android:layout_width="match_parent" android:layout_height="match_parent"
-        android:padding="8dp"/>
-</LinearLayout>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipeRefresh"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ScrollView android:layout_width="match_parent" android:layout_height="match_parent"
+        android:background="#0D0D0D">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="56dp"
+                android:orientation="horizontal" android:gravity="center_vertical"
+                android:padding="8dp">
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:text="JAYNES MAX TV"
+                    android:textColor="#E50914" android:textSize="20sp" android:textStyle="bold"/>
+                <ImageButton android:id="@+id/ivSearch"
+                    android:layout_width="40dp" android:layout_height="40dp"
+                    android:src="@android:drawable/ic_menu_search"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:tint="#FFFFFF"/>
+            </LinearLayout>
+            <FrameLayout android:layout_width="match_parent" android:layout_height="200dp"
+                android:background="#1A1A1A">
+                <TextView android:id="@+id/tvHeroChannel"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|start" android:textColor="#FFFFFF"
+                    android:textSize="20sp" android:textStyle="bold" android:padding="16dp"/>
+                <Button android:id="@+id/btnHeroPlay"
+                    android:layout_width="wrap_content" android:layout_height="40dp"
+                    android:layout_gravity="bottom|end" android:text="▶ Tazama"
+                    android:backgroundTint="#E50914" android:textColor="#FFFFFF"
+                    android:layout_margin="16dp"/>
+            </FrameLayout>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="⚽ Michezo" android:textColor="#FFFFFF"
+                android:textSize="16sp" android:textStyle="bold" android:padding="12dp"/>
+            <androidx.recyclerview.widget.RecyclerView android:id="@+id/rvSports"
+                android:layout_width="match_parent" android:layout_height="100dp"
+                android:orientation="horizontal"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="📺 Azam TV" android:textColor="#FFFFFF"
+                android:textSize="16sp" android:textStyle="bold" android:padding="12dp"/>
+            <androidx.recyclerview.widget.RecyclerView android:id="@+id/rvAzam"
+                android:layout_width="match_parent" android:layout_height="100dp"
+                android:orientation="horizontal"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="🎵 Muziki" android:textColor="#FFFFFF"
+                android:textSize="16sp" android:textStyle="bold" android:padding="12dp"/>
+            <androidx.recyclerview.widget.RecyclerView android:id="@+id/rvMusic"
+                android:layout_width="match_parent" android:layout_height="100dp"
+                android:orientation="horizontal"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="📡 Channels Zote" android:textColor="#FFFFFF"
+                android:textSize="16sp" android:textStyle="bold" android:padding="12dp"/>
+            <androidx.recyclerview.widget.RecyclerView android:id="@+id/rvAll"
+                android:layout_width="match_parent" android:layout_height="100dp"
+                android:orientation="horizontal"/>
+        </LinearLayout>
+    </ScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
