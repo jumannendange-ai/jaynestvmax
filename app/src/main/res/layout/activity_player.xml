@@ -1,14 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="#000000">
-    <androidx.media3.ui.PlayerView android:id="@+id/playerView"
-        android:layout_width="match_parent" android:layout_height="match_parent"/>
-    <LinearLayout android:id="@+id/controlsOverlay"
-        android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:orientation="horizontal" android:gravity="center_vertical"
-        android:padding="8dp" android:background="#80000000">
-        <ImageButton android:id="@+id/btnBack"
+
+    <androidx.media3.ui.PlayerView
+        android:id="@+id/playerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <ProgressBar
+        android:id="@+id/progressBuffering"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@+id/playerControls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="8dp"
+        android:background="#80000000">
+        <ImageButton android:id="@+id/ivBack"
             android:layout_width="40dp" android:layout_height="40dp"
             android:src="@android:drawable/ic_media_previous"
             android:background="?attr/selectableItemBackgroundBorderless"
@@ -18,18 +34,37 @@
             android:layout_weight="1" android:textColor="#FFFFFF"
             android:textSize="16sp" android:textStyle="bold"
             android:layout_marginStart="8dp"/>
-        <ImageButton android:id="@+id/btnQuality"
+        <ImageButton android:id="@+id/ivLock"
             android:layout_width="40dp" android:layout_height="40dp"
-            android:src="@android:drawable/ic_menu_manage"
+            android:src="@android:drawable/ic_lock_idle_lock"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:tint="#FFFFFF"/>
-        <ImageButton android:id="@+id/btnFullscreen"
+        <ImageButton android:id="@+id/ivPip"
             android:layout_width="40dp" android:layout_height="40dp"
             android:src="@android:drawable/ic_menu_zoom"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:tint="#FFFFFF"/>
     </LinearLayout>
-    <ProgressBar android:id="@+id/progressBar"
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvQuality"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|top"
+        android:layout_marginTop="56dp"
+        android:background="#CC000000"
+        android:visibility="gone"/>
+
+    <TextView android:id="@+id/tvError"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_gravity="center" android:visibility="gone"/>
+        android:layout_gravity="center" android:textColor="#FF4444"
+        android:textSize="14sp" android:gravity="center"
+        android:visibility="gone"/>
+
+    <Button android:id="@+id/btnRetry"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_gravity="center" android:layout_marginTop="80dp"
+        android:text="Jaribu Tena" android:backgroundTint="#E50914"
+        android:textColor="#FFFFFF" android:visibility="gone"/>
+
 </FrameLayout>
