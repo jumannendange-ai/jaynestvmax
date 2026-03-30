@@ -1,0 +1,54 @@
+workflows:
+  android-release:
+    name: JAYNES MAX TV — Release Build
+    max_build_duration: 60
+    environment:
+      android_signing:
+        - jaynes_keystore
+      groups:
+        - jaynes_env
+      vars:
+        PACKAGE_NAME: "com.jaynes.maxtv"
+    scripts:
+      - name: Set Android SDK location
+        script: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/local.properties"
+      - name: Build Release APK
+        script: |
+          cd $CM_BUILD_DIR
+          ./gradlew assembleRelease
+      - name: Sign APK
+        script: |
+          cd $CM_BUILD_DIR
+          $ANDROID_SDK_ROOT/build-tools/34.0.0/apksigner sign \
+            --ks $CM_KEYSTORE \
+            --ks-pass pass:$CM_KEYSTORE_PASSWORD \
+            --key-pass pass:$CM_KEY_PASSWORD \
+            --ks-key-alias $CM_KEY_ALIAS \
+            app/build/outputs/apk/release/app-release-unsigned.apk
+    artifacts:
+      - app/build/outputs/apk/release/*.apk
+    publishing:
+      email:
+        recipients:
+          - forjumanne@gmail.com
+        notify:
+          success: true
+          failure: true
+
+  android-debug:
+    name: JAYNES MAX TV — Debug Build
+    max_build_duration: 30
+    environment:
+      vars:
+        PACKAGE_NAME: "com.jaynes.maxtv"
+    scripts:
+      - name: Set Android SDK location
+        script: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/local.properties"
+      - name: Build Debug APK
+        script: |
+          cd $CM_BUILD_DIR
+          ./gradlew assembleDebug
+    artifacts:
+      - app/build/outputs/apk/debug/*.apk

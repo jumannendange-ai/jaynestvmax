@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="red_primary">#E50914</color>
+    <color name="red_dark">#B00710</color>
+    <color name="dark_bg">#0A0A0A</color>
+    <color name="dark_surface">#111111</color>
+    <color name="dark_card">#1A1A1A</color>
+    <color name="dark_border">#333333</color>
+    <color name="gray_text">#888888</color>
+    <color name="light_text">#CCCCCC</color>
+    <color name="gold">#FFD700</color>
+    <color name="green_active">#00CC00</color>
+    <color name="transparent">#00000000</color>
+</resources>

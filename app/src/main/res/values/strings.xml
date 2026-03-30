@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">JAYNES MAX TV</string>
+    <string name="nav_home">Nyumbani</string>
+    <string name="nav_channels">Channels</string>
+    <string name="nav_epg">TV Guide</string>
+    <string name="nav_favorites">Favorites</string>
+    <string name="nav_profile">Profile</string>
+    <string name="loading">Inapakia...</string>
+    <string name="no_internet">Hakuna mtandao</string>
+    <string name="retry">Jaribu Tena</string>
+    <string name="live">LIVE</string>
+    <string name="watch_now">Tazama Sasa</string>
+    <string name="subscribe_now">Jiandikishe Sasa</string>
+</resources>
