@@ -22,6 +22,6 @@ class JaynesApp : Application() {
 
     private fun initOneSignal() {
         OneSignal.Debug.logLevel = LogLevel.NONE
-        OneSignal.initWithContext(this, BuildConfig.ONESIGNAL_APP_ID)
+        OneSignal.initWithContext(this, "10360777-3ada-4145-b83f-00eb0312a53f")
     }
 }
