@@ -19,10 +19,9 @@ import kotlinx.coroutines.launch
 class SplashActivity : AppCompatActivity() {
     private lateinit var tokenManager: TokenManager
     override fun onCreate(savedInstanceState: Bundle?) {
-        val splashScreen = installSplashScreen()
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         tokenManager = TokenManager(this)
-        splashScreen.setKeepOnScreenCondition { true }
         lifecycleScope.launch {
             delay(1500) // Onyesha splash kidogo
             // 1. Check internet
